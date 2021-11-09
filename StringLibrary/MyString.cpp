@@ -1,0 +1,223 @@
+#include "MyString.h"
+
+namespace thebetterstring
+{
+	MyString::MyString(const char* arr) //const weil das char array nicht ver�ndert wird, als pointer weil wenn man einen array einer funktion �bergibt nicht die gr��e des arrays mitgegeben wird
+	{
+		this->length = 0; //beim erstellen des Objekts die l�nge am anfang auf 0 setzen
+		if (arr != nullptr)
+		{			
+			this->length = CalcLength(arr);
+			StringKopie(arr);
+		}
+		else {
+			this->data = new char[0];
+		}
+	}
+
+	MyString::~MyString()
+	{
+		if (this->data != nullptr)
+		{
+			delete[]data;
+			data = nullptr;
+		}
+			
+		
+	}
+
+	//Copy Constructor
+	MyString::MyString(const MyString& string)
+	{
+		LengthKopie(string.length);
+		StringKopie(string.data);
+	}
+
+	//Move constructor
+	MyString::MyString(MyString&& string)
+	{
+		if (this != &string)
+		{
+			// Move constructor
+			// It will simply shift the resources,
+			// without creating a copy.
+			LengthKopie(string.length);
+			StringKopie(string.data);
+			string.data = nullptr;
+		}
+		
+	}
+
+	void MyString::StringKopie(const char* string)
+	{
+
+		delete[] this->data;
+		data = nullptr;
+		this->data = new char[this->length + 1]; //hier wird speicher f�r die l�nge des �bergegebenen arrays allokiert / +1 um den null-terminator dazu zu tun
+		for (int i = 0; i < this->length; i++)
+		{
+			this->data[i] = string[i];
+		}
+		//null terminator dazu tun
+		this->data[length] = '\0';
+	}
+
+	void MyString::LengthKopie(int length)
+	{
+		this->length = length;
+	}
+
+	int MyString::CalcLength(const char* string) const
+	{
+		int length = 0;
+		for (int i = 0; string[i] != '\0';i++)
+		{
+			length++;
+		}
+		return length;
+	}
+
+	char* MyString::ZsmFuegen(const char* string1, const char* string2)const
+	{
+		//Hier ein Objekt angelegt damit der Garbage kollektor die berreinigung übernimmt
+		//Wenn mit new einen neuen char* angelegt wurde hier um die 2 zusammen zu fügen gäbe es einen memory leak
+		MyString tmpString(string1);
+		tmpString.Concatenate(string2);
+		//ACHTUNG!!! Hier ist der  memory leak!!!
+		char * tmp = (char*)tmpString.c_str();
+		//delete[] tmpString.data;
+		tmpString.data = nullptr;
+		return tmp;
+		
+	}
+
+	const char* MyString::c_str() const
+	{
+		return this->data;
+
+	}
+
+	const int MyString::GetLength()const
+	{
+		return this->length;
+	}
+
+	std::ostream& operator<<(std::ostream& os, const MyString& str)
+	{
+		int i = 0;
+		while (str.data[i]!='\0')
+		{
+			os << str.data[i];
+			i++;
+		}
+		return os;
+	}
+
+	void puts(const MyString& string)
+	{
+		std::cout << string.c_str() << std::endl;
+	}
+
+	MyString MyString :: operator+(const MyString& string2)
+	{
+
+		return MyString(this->ZsmFuegen(this->data, string2.c_str()));
+	}
+
+	MyString MyString:: operator+(const char* string2)
+	{
+		return MyString(this->ZsmFuegen(this->data, string2));
+	}
+
+	std::string MyString::ToString() const
+	{
+		std::string tmp = "";
+		for (int i = 0; this->data[i] != '\0'; i++)
+		{
+			tmp += this->data[i];
+		}
+		return tmp;
+	}
+
+
+	// Zuweisungsoperator
+	MyString MyString::operator=(const MyString& string)
+	{
+		if (this != &string) // wenn es keine Zuweisung an sich selbst ist
+		{
+			//delete data; // l�sche bisherige Daten
+			int len = CalcLength(string.data); // Gr��e?
+			LengthKopie(len); // neue größe setzen
+			StringKopie(string.c_str()); // Daten �bernehmen
+			
+		}
+
+		return *this; // zur�ck mit dem aktuellen Objekt
+	}
+
+	MyString MyString::operator=(const char* string)
+	{
+		if (string) // wenn es keine Zuweisung an sich selbst ist
+		{
+			//delete data; // l�sche bisherige Daten
+			int len = CalcLength(string); // Gr��e?
+			LengthKopie(len); // neue größe setzen
+			StringKopie(string); // Daten �bernehmen
+
+		}
+
+		return *this; // zur�ck mit dem aktuellen Objekt
+	}
+
+	MyString& MyString::operator+=(const MyString& string)
+	{
+		this->Concatenate(string.c_str());
+		return *this;
+	}
+
+	MyString& MyString::operator+=(const char* string)
+	{
+		this->Concatenate(string);
+		return *this;
+	}
+
+	void MyString::Concatenate(const char* another_string) 
+	{
+		if (another_string)
+		{
+			int tmp_length = CalcLength(another_string);
+			int new_length = tmp_length + this->length;
+			char* newString = new char [new_length + 1];
+			for (int i = 0; this->data[i] != '\0'; i++)
+			{
+				newString[i] = this->data[i];
+			}
+
+			for (int j = this->length, i = 0; another_string[i] != '\0', i < tmp_length; i++, j++)
+			{
+				newString[j] = another_string[i];
+			}
+
+			newString[new_length] = '\0';
+
+			//char* new_string = ZsmFuegen(this->data, another_string);
+			LengthKopie(new_length);
+			StringKopie(newString);
+			delete[] newString;
+			newString = nullptr;
+		}
+	}
+
+	void MyString::Concatenate(const MyString& myString) 
+	{
+		Concatenate(myString.c_str());
+	}
+
+
+	/*MyString& operator+(std::string data, const MyString& str)
+	{
+
+	}*/
+
+
+}
