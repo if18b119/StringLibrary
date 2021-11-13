@@ -1,5 +1,7 @@
-stringlibrary.exe: String.o
-	g++ -std=c++14 -static StringLibrary/String.o -o stringlibrary.exe
+stringlibrary.exe: Program.o MyString.o
+	g++ -std=c++14 -static Program.o MyString.o -o stringlibrary.exe
 	
-String.o: StringLibrary/MyString.cpp
+MyString.o: StringLibrary/MyString.cpp
 		g++ -std=c++14 -c StringLibrary/MyString.cpp -o String.o
+Program.o: StringLibrary/StringLibraryMain.cpp
+		g++ -std=c++14 -c StringLibrary/StringLibraryMain.cpp -o Program.o
