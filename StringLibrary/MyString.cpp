@@ -1,7 +1,7 @@
 #include "MyString.h"
-
 namespace thebetterstring
 {
+
 	MyString::MyString(const char* arr) //const weil das char array nicht ver�ndert wird, als pointer weil wenn man einen array einer funktion �bergibt nicht die gr��e des arrays mitgegeben wird
 	{
 		this->length = 0; //beim erstellen des Objekts die l�nge am anfang auf 0 setzen

@@ -6,6 +6,11 @@
 #include <string.h>
 #define _CRTDBG_MAP_ALLOC
 
+#ifdef _DEBUG
+    #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+#else
+    #define DBG_NEW new
+#endif
 using namespace thebetterstring;
 
 void CreateMyStringWithString()
@@ -93,7 +98,7 @@ void TestingMoveConstructor()
 }
 
 
-
+using Iterator = thebetterstring::MyString::MyStringIterator<char>;
 //Die testfälle sollten in einer eigenen Methode geschrieben werden
 //jeder einzelne schritt alleine und in der main mit assert dann überprüfen
 int main() // Einstiegsfunktion jedes compilers
@@ -104,10 +109,13 @@ int main() // Einstiegsfunktion jedes compilers
     ConcatenateMyStringWithString();
     ConcatenateMyStringWithAnotherMyString();
     MyStringEqualsAnotherMyString();
-    CreatingConstMyStringAndExtendedAdditions();
+    //CreatingConstMyStringAndExtendedAdditions();
     //TestingCopyConstructorWhenDeletedOneOfBoth();
     TestingMoveConstructor();
-    
+
+    MyString test("Hello World");
+    for (Iterator it = test.begin(); it != test.end(); ++it) { std::cout << *it << '\n'; }
+    //std::cout << (std::find(test.begin(), test.end(), 'W') != test.end()) << '\n';
     //myString.Concatenate(myString);
     //MyString otherString(myString);
     //std::cout << otherString << std::endl;

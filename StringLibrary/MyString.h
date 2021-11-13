@@ -11,22 +11,78 @@ auch die deklarierung muss in dem von mir erstellten namespace sein
 namespace thebetterstring
 {
 
-	template<typename MyString>
-	class MyStringIterator
-	{
-		public:
-			using ValueType = char;
-			using PointerType = char*;
-			using ReferenceType = char&;
-
-		public:
-			MyStringIterator(PointerType ptr);
-		
-		
-	};
+	
 	class MyString
 	{
+
 		public:
+			template <class T>
+			class MyStringIterator
+			{
+			public:
+				using ValueType = T;
+				using PointerType = T*;
+				using ReferenceType = T&;
+
+			public:
+				MyStringIterator(PointerType ptr)
+				{
+					this->current_ptr = ptr;
+				}
+				MyStringIterator& operator++()//increment than assing
+				{
+					//incrementiert den Pointer um den richtigen anteil an bytes vom pointertyp in unserem fall char*
+					current_ptr++;
+					return *this;
+				}
+				//assign than increment (postfix increment)
+				//returned eine kopie und dann increment
+				MyStringIterator operator++(int)
+				{
+					MyStringIterator iterator = *this;
+					//call back to operator++() function to increment the pointer
+					++(*this);
+					return iterator;
+				}
+				MyStringIterator& operator--()
+				{
+					//incrementiert den Pointer um den richtigen anteil an bytes vom pointertyp in unserem fall char*
+					current_ptr++;
+					return *this;
+				}
+				MyStringIterator operator--(int)
+				{
+					MyStringIterator iterator = *this;
+					//call back to operator++() function to increment the pointer
+					--(*this);
+					return iterator;
+				}
+				ReferenceType operator[](int index)
+				{
+					return *(current_ptr + index);
+				}
+				PointerType operator->()
+				{
+					return current_ptr;
+				}
+				ReferenceType operator*()
+				{
+					return *current_ptr;
+				}
+				bool operator==(const MyStringIterator& other) const
+				{
+					return current_ptr == other.current_ptr;
+				}
+				bool operator!=(const MyStringIterator& other) const
+				{
+					return !(*this == other);
+				}
+
+			private:
+				PointerType current_ptr;
+
+
+			};
 			MyString(const char* arr); //conversion function //Konstruktor.
 			~MyString();
 			MyString(const MyString& string);  //Copy Constructor
@@ -45,8 +101,15 @@ namespace thebetterstring
 			void Concatenate(const char* another_string);
 			void Concatenate(const MyString& myString);
 			std::string ToString() const;
-			MyStringIterator begin();
-			MyStringIterator end();
+			const MyStringIterator<char> begin()
+			{
+				return MyStringIterator<char>(data);
+			}
+			const MyStringIterator<char> end()
+			{
+				return MyStringIterator<char>(data + length);
+			}
+
 		private:
 			char* data=nullptr;
 			int length;
