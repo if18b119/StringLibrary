@@ -8,6 +8,7 @@ namespace thebetterstring
 		if (arr != nullptr)
 		{			
 			this->length = CalcLength(arr);
+			//hier wird kopiert weil ich nicht weiß ob arr am stack oder heap ist
 			StringKopie(arr);
 		}
 		else {
@@ -42,7 +43,10 @@ namespace thebetterstring
 			// It will simply shift the resources,
 			// without creating a copy.
 			LengthKopie(string.length);
-			StringKopie(string.data);
+
+			if (data != nullptr)
+				delete[] data;
+			data = string.data;
 			string.data = nullptr;
 		}
 		
@@ -79,19 +83,21 @@ namespace thebetterstring
 
 	char* MyString::ZsmFuegen(const char* string1, const char* string2)const
 	{
+		
+
 		//Hier ein Objekt angelegt damit der Garbage kollektor die berreinigung übernimmt
 		//Wenn mit new einen neuen char* angelegt wurde hier um die 2 zusammen zu fügen gäbe es einen memory leak
 		MyString tmpString(string1);
 		tmpString.Concatenate(string2);
-		//ACHTUNG!!! Hier ist der  memory leak!!!
-		char * tmp = (char*)tmpString.c_str();
+		//ACHTUNG!!! Hier ist der memory leak!!!
+		char * tmp = tmpString.c_str();
 		//delete[] tmpString.data;
 		tmpString.data = nullptr;
 		return tmp;
 		
 	}
 
-	const char* MyString::c_str() const
+	char* MyString::c_str() const
 	{
 		return this->data;
 
@@ -120,13 +126,19 @@ namespace thebetterstring
 
 	MyString MyString :: operator+(const MyString& string2)
 	{
+		char* tmp = this->ZsmFuegen(this->data, string2.c_str());
+		MyString result(tmp);
 
-		return MyString(this->ZsmFuegen(this->data, string2.c_str()));
+		delete[] tmp;
+		return result;
 	}
 
 	MyString MyString:: operator+(const char* string2)
 	{
-		return MyString(this->ZsmFuegen(this->data, string2));
+		char* tmp = this->ZsmFuegen(this->data, string2);
+		MyString result(tmp);
+		delete[] tmp;
+		return result;
 	}
 
 	std::string MyString::ToString() const

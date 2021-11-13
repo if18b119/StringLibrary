@@ -18,7 +18,7 @@ namespace thebetterstring
 			MyString(const MyString& string);  //Copy Constructor
 			MyString(MyString&& string); //move constructor
 			
-			const char* c_str() const; //getter für den data pointer der klasse, const weil nur ausgelesen wird
+			char* c_str() const; //getter für den data pointer der klasse, const weil nur ausgelesen wird
 			const int GetLength()const; // lieber size_t verwenden
 			friend std::ostream& operator<<(std::ostream& os, const MyString& str); //Als reference weil hier eine kopie kein sinn ergibt und mein objekt als read only (const reference)
 			MyString operator=(const MyString& string);

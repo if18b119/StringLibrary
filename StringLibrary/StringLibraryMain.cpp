@@ -55,27 +55,13 @@ void CreatingConstMyStringAndExtendedAdditions()
 {
     MyString myString("Hello");
     MyString myString2(" World");
-    std::string testString = "Hello World";
     myString += myString2;
-    const char* cstr = myString.c_str();
-    for (int i = 0; testString[i] != '\0'; i++)
-    {
-        assert(cstr[i] == testString[i]);
-    }
-
-
     MyString myString3 = myString + myString2;
     assert(myString3.ToString() == "Hello World World");
 
-    //Hello World ist verdreht
-    /*myString3 += "Hello";
-    const MyString myString4 = myString3 + "World";
-    testString += testString;
-    const char* cstr3 = myString3.c_str();
-    for (int i = 0; testString[i] != '\0'; i++)
-    {
-        assert(cstr3[i] == testString[i]);
-    }*/
+    /*myString3 += " Hello";
+    const MyString myString4 = myString3 + " World";
+    assert(myString4.ToString() == "Hello World World Hello World");*/
 
 }
 
@@ -119,8 +105,8 @@ int main() // Einstiegsfunktion jedes compilers
     ConcatenateMyStringWithAnotherMyString();
     MyStringEqualsAnotherMyString();
     CreatingConstMyStringAndExtendedAdditions();
-    TestingCopyConstructorWhenDeletedOneOfBoth();
-    //TestingMoveConstructor();
+    //TestingCopyConstructorWhenDeletedOneOfBoth();
+    TestingMoveConstructor();
     
     //myString.Concatenate(myString);
     //MyString otherString(myString);
