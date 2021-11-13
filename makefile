@@ -5,3 +5,5 @@ MyString.o: StringLibrary/MyString.cpp
 		g++ -std=c++14 -c StringLibrary/MyString.cpp -o String.o
 Program.o: StringLibrary/StringLibraryMain.cpp
 		g++ -std=c++14 -c StringLibrary/StringLibraryMain.cpp -o Program.o
+clean:
+		rm -f Program.o MyString.o stringlibrary.exe
