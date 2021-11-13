@@ -10,6 +10,20 @@ auch die deklarierung muss in dem von mir erstellten namespace sein
 
 namespace thebetterstring
 {
+
+	template<typename MyString>
+	class MyStringIterator
+	{
+		public:
+			using ValueType = char;
+			using PointerType = char*;
+			using ReferenceType = char&;
+
+		public:
+			MyStringIterator(PointerType ptr);
+		
+		
+	};
 	class MyString
 	{
 		public:
@@ -31,6 +45,8 @@ namespace thebetterstring
 			void Concatenate(const char* another_string);
 			void Concatenate(const MyString& myString);
 			std::string ToString() const;
+			MyStringIterator begin();
+			MyStringIterator end();
 		private:
 			char* data=nullptr;
 			int length;
