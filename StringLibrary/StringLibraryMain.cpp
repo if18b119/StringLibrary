@@ -2,15 +2,8 @@
 #include "MyString.h"
 #include <cassert>
 #include <stdlib.h>
-#include <crtdbg.h>
 #include <string.h>
-#define _CRTDBG_MAP_ALLOC
 
-#ifdef _DEBUG
-    #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
-#else
-    #define DBG_NEW new
-#endif
 using namespace thebetterstring;
 
 void CreateMyStringWithString()
@@ -99,9 +92,7 @@ void TestingMoveConstructor()
 
 
 using Iterator = thebetterstring::MyString::MyStringIterator<char>;
-//Die testfälle sollten in einer eigenen Methode geschrieben werden
-//jeder einzelne schritt alleine und in der main mit assert dann überprüfen
-int main() // Einstiegsfunktion jedes compilers
+int main()
 {
     
     CreateMyStringWithString();
@@ -115,31 +106,6 @@ int main() // Einstiegsfunktion jedes compilers
 
     MyString test("Hello World");
     for (Iterator it = test.begin(); it != test.end(); ++it) { std::cout << *it << '\n'; }
-    //std::cout << (std::find(test.begin(), test.end(), 'W') != test.end()) << '\n';
-    //myString.Concatenate(myString);
-    //MyString otherString(myString);
-    //std::cout << otherString << std::endl;
-    //MyString yetAnotherString("AnotherWorld");
-    //otherString = yetAnotherString;
-
-    ////Teil2
-    //std::cout << "Teil 2\n_________________________________" << std::endl;
-    //MyString s1("Hello");
-    //const MyString s2("World");
-    //s1 += s2;
-    //std::cout << s1 << std::endl;
-    //MyString s3 = s1 + s2;
-    //s3 += "Hello";
-    //const MyString s4 = s3 + "World";
-    //puts(s4);
-    //To check memory leaks
-    _CrtDumpMemoryLeaks();
-    exit(0);
-    //Teil3
-    // 
-    //const String test("Hello World");
-   // for (String::Iterator it = test.begin(); it != test.end(); ++it) { std::cout << *it << '\n'; }
-   //std::cout << (std::find(test.begin(), test.end(), 'W') != test.end()) << '\n';
 
 
 }
@@ -152,14 +118,3 @@ int main() // Einstiegsfunktion jedes compilers
     std::cout << b << std::endl;  //der Inhalt des Pointers (die Speicheradresse der variable a) 
 
 */
-
-// Programm ausführen: STRG+F5 oder Menüeintrag "Debuggen" > "Starten ohne Debuggen starten"
-// Programm debuggen: F5 oder "Debuggen" > Menü "Debuggen starten"
-
-// Tipps für den Einstieg: 
-//   1. Verwenden Sie das Projektmappen-Explorer-Fenster zum Hinzufügen/Verwalten von Dateien.
-//   2. Verwenden Sie das Team Explorer-Fenster zum Herstellen einer Verbindung mit der Quellcodeverwaltung.
-//   3. Verwenden Sie das Ausgabefenster, um die Buildausgabe und andere Nachrichten anzuzeigen.
-//   4. Verwenden Sie das Fenster "Fehlerliste", um Fehler anzuzeigen.
-//   5. Wechseln Sie zu "Projekt" > "Neues Element hinzufügen", um neue Codedateien zu erstellen, bzw. zu "Projekt" > "Vorhandenes Element hinzufügen", um dem Projekt vorhandene Codedateien hinzuzufügen.
-//   6. Um dieses Projekt später erneut zu öffnen, wechseln Sie zu "Datei" > "Öffnen" > "Projekt", und wählen Sie die SLN-Datei aus.
