@@ -9,7 +9,7 @@ namespace thebetterstring
 		{			
 			this->length = CalcLength(arr);
 			//hier wird kopiert weil ich nicht weiß ob arr am stack oder heap ist
-			StringKopie(arr);
+			CopyString(arr);
 		}
 		else {
 			this->data = new char[0];
@@ -30,8 +30,8 @@ namespace thebetterstring
 	//Copy Constructor
 	MyString::MyString(const MyString& string)
 	{
-		LengthKopie(string.length);
-		StringKopie(string.data);
+		CopyLength(string.length);
+		CopyString(string.data);
 	}
 
 	//Move constructor
@@ -42,7 +42,7 @@ namespace thebetterstring
 			// Move constructor
 			// It will simply shift the resources,
 			// without creating a copy.
-			LengthKopie(string.length);
+			CopyLength(string.length);
 
 			if (data != nullptr)
 				delete[] data;
@@ -52,7 +52,7 @@ namespace thebetterstring
 		
 	}
 
-	void MyString::StringKopie(const char* string)
+	void MyString::CopyString(const char* string)
 	{
 
 		delete[] this->data;
@@ -66,7 +66,7 @@ namespace thebetterstring
 		this->data[length] = '\0';
 	}
 
-	void MyString::LengthKopie(int length)
+	void MyString::CopyLength(int length)
 	{
 		this->length = length;
 	}
@@ -81,7 +81,7 @@ namespace thebetterstring
 		return length;
 	}
 
-	char* MyString::ZsmFuegen(const char* string1, const char* string2)const
+	char* MyString::link(const char* string1, const char* string2)const
 	{
 		
 
@@ -90,14 +90,19 @@ namespace thebetterstring
 		MyString tmpString(string1);
 		tmpString.Concatenate(string2);
 		//ACHTUNG!!! Hier ist der memory leak!!!
-		char * tmp = tmpString.c_str();
+		char * tmp = (char *)tmpString.c_str();
 		//delete[] tmpString.data;
 		tmpString.data = nullptr;
 		return tmp;
 		
 	}
 
-	char* MyString::c_str() const
+	MyString:: operator const char* ()const
+	{
+		return c_str();
+	}
+
+	const char* MyString::c_str() const
 	{
 		return this->data;
 
@@ -118,15 +123,14 @@ namespace thebetterstring
 		}
 		return os;
 	}
-
-	void puts(const MyString& string)
+	char MyString::operator[](int index)
 	{
-		std::cout << string.c_str() << std::endl;
+		return *(data + index);
 	}
 
 	MyString MyString :: operator+(const MyString& string2)
 	{
-		char* tmp = this->ZsmFuegen(this->data, string2.c_str());
+		char* tmp = this->link(this->data, string2.c_str());
 		MyString result(tmp);
 
 		delete[] tmp;
@@ -135,7 +139,7 @@ namespace thebetterstring
 
 	MyString MyString:: operator+(const char* string2)
 	{
-		char* tmp = this->ZsmFuegen(this->data, string2);
+		char* tmp = this->link(this->data, string2);
 		MyString result(tmp);
 		delete[] tmp;
 		return result;
@@ -152,19 +156,34 @@ namespace thebetterstring
 	}
 
 
-	// Zuweisungsoperator
+	// Zuweisungsoperator (copy assigment operator)
 	MyString MyString::operator=(const MyString& string)
 	{
 		if (this != &string) // wenn es keine Zuweisung an sich selbst ist
 		{
 			//delete data; // l�sche bisherige Daten
 			int len = CalcLength(string.data); // Gr��e?
-			LengthKopie(len); // neue größe setzen
-			StringKopie(string.c_str()); // Daten �bernehmen
+			CopyLength(len); // neue größe setzen
+			CopyString(string.c_str()); // Daten �bernehmen
 			
 		}
 
 		return *this; // zur�ck mit dem aktuellen Objekt
+	}
+
+	// Move assigment operator
+	MyString MyString::operator=(MyString&& string)
+	{
+		if (this != &string)
+		{
+			CopyLength(string.length);
+
+			if (data != nullptr)
+				delete[] data;
+			data = string.data;
+			string.data = nullptr;
+		}
+		return *this;
 	}
 
 	MyString MyString::operator=(const char* string)
@@ -173,8 +192,8 @@ namespace thebetterstring
 		{
 			//delete data; // l�sche bisherige Daten
 			int len = CalcLength(string); // Gr��e?
-			LengthKopie(len); // neue größe setzen
-			StringKopie(string); // Daten �bernehmen
+			CopyLength(len); // neue größe setzen
+			CopyString(string); // Daten �bernehmen
 
 		}
 
@@ -213,8 +232,8 @@ namespace thebetterstring
 			newString[new_length] = '\0';
 
 			//char* new_string = ZsmFuegen(this->data, another_string);
-			LengthKopie(new_length);
-			StringKopie(newString);
+			CopyLength(new_length);
+			CopyString(newString);
 			delete[] newString;
 			newString = nullptr;
 		}
