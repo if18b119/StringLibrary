@@ -19,11 +19,12 @@ namespace thebetterstring
 			template <class T>
 			class MyStringIterator
 			{
-			public:
+				public:
+				using iterator_category = std::forward_iterator_tag;
+				using diffrence_type = std::ptrdiff_t;
 				using ValueType = T;
 				using PointerType = T*;
 				using ReferenceType = T&;
-
 			public:
 				MyStringIterator(PointerType ptr)
 				{
@@ -73,7 +74,6 @@ namespace thebetterstring
 				{
 					return !(*this == other);
 				}
-
 			private:
 				PointerType current_ptr;
 			};
@@ -97,6 +97,7 @@ namespace thebetterstring
 			void Concatenate(const char* another_string);
 			void Concatenate(const MyString& myString);
 			std::string ToString() const;
+
 			const MyStringIterator<char> begin()const
 			{
 				return MyStringIterator<char>(data);

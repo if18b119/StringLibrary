@@ -1,4 +1,5 @@
 #include "MyString.h"
+
 namespace thebetterstring
 {
 

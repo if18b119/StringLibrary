@@ -108,6 +108,7 @@ void TestingIterator()
     std::cout << "| Test Name:    TestingIterator" << std::endl;
     int i = 0;
     const MyString test("Hello World");
+    Iterator it= test.begin();
     for (Iterator it = test.begin(); it != test.end(); ++it)
     { 
         i++;
