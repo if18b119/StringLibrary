@@ -90,7 +90,6 @@ namespace thebetterstring
 		//Wenn mit new einen neuen char* angelegt wurde hier um die 2 zusammen zu fügen gäbe es einen memory leak
 		MyString tmpString(string1);
 		tmpString.Concatenate(string2);
-		//ACHTUNG!!! Hier ist der memory leak!!!
 		char * tmp = (char *)tmpString.c_str();
 		//delete[] tmpString.data;
 		tmpString.data = nullptr;
@@ -173,7 +172,7 @@ namespace thebetterstring
 	}
 
 	// Move assigment operator
-	MyString MyString::operator=(MyString&& string)
+	MyString MyString::operator=(MyString&& string) 
 	{
 		if (this != &string)
 		{

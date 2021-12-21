@@ -6,7 +6,7 @@
 #include "StringLibraryMain.h"
 
 using namespace thebetterstring;
-using Iterator = thebetterstring::MyString::MyStringIterator<char>;
+using Iterator = thebetterstring::MyString::MyStringIterator<char>; //um mir schreibarbeit zu sparren
 
 void CreateMyStringWithString()
 {
@@ -130,6 +130,16 @@ void TestingReverseIterator()
     std::cout << "| Test Status:  Passed\n" << std::endl;
 }
 
+void TestMoveAssigmentOperator()
+{
+    std::cout << "| Test Name:    TestMoveAssigmentOperator" << std::endl;
+    MyString test("Hello World");
+    MyString test2("Hello World22!");
+    test2 = std::move(test);
+
+
+    assert(test2.ToString() == "Hello World");
+}
 
 void RunTests()
 {
@@ -145,7 +155,8 @@ void RunTests()
     TestingMoveConstructor();
     TestingIterator();
     TestingReverseIterator();
-    std::cout << "10 out of 10 Tests passed" << std::endl;
+    TestMoveAssigmentOperator();
+    std::cout << "11 out of 11 Tests passed" << std::endl;
 }
 
 
@@ -156,12 +167,4 @@ int main()
     RunTests();
 
 }
-/*
-    int a = 3;
-    std::cout << &a << std::endl; //die Speicheradresse der variable 
 
-    int* b = &a;  // ich lege einen Pointer an der eine speicheradresse beinhaltet
-    std::cout << &b << std::endl; //die Peicheradresse des Pointers
-    std::cout << b << std::endl;  //der Inhalt des Pointers (die Speicheradresse der variable a) 
-
-*/

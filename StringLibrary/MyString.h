@@ -123,7 +123,6 @@ namespace thebetterstring
 			void CopyString(const char* string);
 			//Um die länge zu kopieren
 			void CopyLength(int length);
-			//Um die länge eines char arrays zu berrechnen lieber size_t verwenden size_t??
 			int CalcLength(const char* string) const;
 			char* link(const char* string1, const char* string2)const;
 			
